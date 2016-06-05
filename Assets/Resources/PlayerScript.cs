@@ -2,8 +2,9 @@
 using System.Collections;
 
 public class PlayerScript : MonoBehaviour {
-	private const int _moveSpeed = 5;
+	private const int _moveSpeed = 3;
 	private const int _rotationSpeed = 360;
+	private float _angle = 0.0f;
 	private Rigidbody2D _rigidbody2D;
 
 	// Use this for initialization
@@ -21,14 +22,15 @@ public class PlayerScript : MonoBehaviour {
 
 		// Set rotation
 		if (left) {
-			transform.Rotate(Vector3.forward * Time.deltaTime * _rotationSpeed);
+			_angle += Time.deltaTime * _rotationSpeed;
 		}
 		else if(right) {
-			transform.Rotate(Vector3.back * Time.deltaTime * _rotationSpeed);
+			_angle -= Time.deltaTime * _rotationSpeed;
 		}
+		//transform.rotation = Quaternion.AngleAxis (_angle, Vector3.forward);
 
 		// Set speed
-		GetComponent<Rigidbody2D>().velocity = transform.up * _moveSpeed;
+		_rigidbody2D.velocity = new Vector2 (-Mathf.Sin(_angle * Mathf.Deg2Rad) * _moveSpeed, Mathf.Cos(_angle * Mathf.Deg2Rad) * _moveSpeed); //transform.up * _moveSpeed;
 
 		// Camera follow
 		Vector3 pos = transform.position;
